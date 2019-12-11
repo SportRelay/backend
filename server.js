@@ -1,26 +1,28 @@
 const express = require("express");
-const app = express();
 const path = require("path");
 const cors = require('cors');
 const mongoose = require("mongoose");
 const dotenv = require("dotenv/config");
-const passport = require('passport');//after you session 
 const jwt = require('jsonwebtoken');
-// const mongooseConnect = require('./helper/mongodb')
 
-
-//Routes includes
-const authRoutes = require("./routes/auth");
-const usersRoutes = require("./routes/users");
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-mongoose.set('useCreateIndex', true);
-
+// Set Port 
 const PORT = process.env.PORT || 5000;
 
+//Express server
+const app = express();
+
+//Routes Requires
+const authRoutes = require("./routes/auth");
+
+//Middlewares
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 
+
+mongoose.set('useCreateIndex', true);
+
+// Connect Database
 mongoose.connect(
   process.env.DEV_DB,
   { useNewUrlParser: true, useUnifiedTopology: true },
@@ -29,16 +31,15 @@ mongoose.connect(
   }
 );
 
+// Routes
 app.use("/api/auth", authRoutes);
-app.use("/api/users", usersRoutes);
 
-//passport ininitalied after you session is a must
-app.use(passport.initialize());
-app.use(passport.session());
-
+// Unresgister routes -- 404 page not found
 app.get("/api/*", (req, res) => {
   res.status(404).json({message: "Page not found"});
 });
 
 console.log(PORT)
+
+// Server listen on PORT
 app.listen(PORT, () => console.log("express running"));

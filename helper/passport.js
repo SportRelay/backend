@@ -9,6 +9,8 @@ const dotenv = require("dotenv/config");
 const User = require('../models/User')
 
 passport.use(new LocalStrategy({
+    // usernameField: 'username',
+    // emailField: 'email',
     usernameField: 'email',
     passwordField: 'password',
     session: false,

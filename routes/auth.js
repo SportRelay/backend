@@ -67,15 +67,15 @@ router.post('/register', (request, response)=>{
 })
 
 router.post('/reset', async (request, response)=>{
-  passport.authenticate('jwt', {session: false}, (err, user, info)=>{
+  passport.authenticate('jwt', {session: false}, async (err, user, info)=>{
       if(err){ return response.status(400).json({ message: err }) }
 
       if(info !== undefined){
         return response.json({ message: info.message })
       }else{
-        const user = await User.findById(userId);
+
         if(!user){
-          response.status(200).json({ message : "User not found -- Stop modifying the token or we will sue you" })
+          response.status(200).json({ message : "User not found" })
         }
         user.password = request.body.newPassword;
         try{
@@ -85,7 +85,7 @@ router.post('/reset', async (request, response)=>{
           response.status(401).json({ message : "Something happend"})
         }
       }
-  })(request, response, next)
+  })(request, response)
 
 
 })
