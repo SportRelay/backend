@@ -4,6 +4,7 @@ const cors = require('cors');
 const mongoose = require("mongoose");
 const dotenv = require("dotenv/config");
 const jwt = require('jsonwebtoken');
+const passport = require('passport');
 
 // Set Port 
 const PORT = process.env.PORT || 5000;
@@ -13,6 +14,7 @@ const app = express();
 
 //Routes Requires
 const authRoutes = require("./routes/auth");
+const userRoutes = require("./routes/user");
 
 //Middlewares
 app.use(express.json());
@@ -31,8 +33,13 @@ mongoose.connect(
   }
 );
 
+// JWT
+app.use('/api/user', passport.authenticate('jwt', {session: false}), require('./routes/user'));
+
+
 // Routes
 app.use("/api/auth", authRoutes);
+app.use("/api/user", userRoutes);
 
 // Unresgister routes -- 404 page not found
 app.get("/api/*", (req, res) => {

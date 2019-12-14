@@ -49,9 +49,11 @@ router.get("/allusers", async (req, res) => {
 router.post('/register', (request, response)=>{
 
   let data = {
-    username : request.body.username,
+    firstname: request.body.firstname,
+    lastname: request.body.lastname, 
+    username: request.body.username,
     password: request.body.password,
-        email : request.body.email
+    email: request.body.email
   }
 
   let user = new User(data)
@@ -66,24 +68,47 @@ router.post('/register', (request, response)=>{
 
 })
 
-router.post('/reset', async (request, response)=>{
+router.patch('/reset', async (request, response)=>{
   passport.authenticate('jwt', {session: false}, async (err, user, info)=>{
       if(err){ return response.status(400).json({ message: err }) }
 
       if(info !== undefined){
         return response.json({ message: info.message })
       }else{
-
         if(!user){
           response.status(200).json({ message : "User not found" })
         }
-        user.password = request.body.newPassword;
-        try{
-          await user.save();
-          response.status(200).json({ message : "Password has been reset Successfully" })
-        }catch{
-          response.status(401).json({ message : "Something happend"})
-        }
+        await user.verifyPassword(request.body.password, user.password, async (err, res) => {
+          if(err){
+            response.status(401).json({ message : "Something happend"})
+          }
+          else if(!res){
+            response.status(400).json({ message : "Wrong password" })
+          }
+          else{
+                console.log(user, info, err)
+
+            await user.verifyPassword(request.body.newPassword, user.password, async (err, res) => {
+              user.password = request.body.newPassword;
+              if(err){
+                response.status(401).json({ message : "Something happend"})
+              }
+              else if(res){
+                                console.log(user.password, request.body.password)
+
+                response.status(400).json({ message : "Entered new password is the same as old password" })
+              }
+              else{
+                try{
+                  await user.save();
+                  response.status(200).json({ message : "Password has been reset Successfully" })
+                }catch{
+                  response.status(401).json({ message : "Something happend"})
+                }
+              }
+            })
+          }
+        })
       }
   })(request, response)
 
