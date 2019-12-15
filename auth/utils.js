@@ -7,6 +7,9 @@ parseUserId = (jwtToken) => {
 }
 getUserId = (event) => {
   const authorization = event.headers.authorization
+  if(authorization === undefined){
+  	throw "Unauthorized"
+  }
   const split = authorization.split(' ')
   const jwtToken = split[1]
   

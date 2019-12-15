@@ -36,10 +36,11 @@ router.get('/', (request, response, next) => {
 
 router.get("/allusers", async (req, res) => {
   try{
-    const allusers = await User.find();
+    const allusers = await User.find().populate('posts');
     allusers.forEach(user => user.password = "");
     res.json({users:allusers});
    }catch(err){
+     console.log(err)
      res.status(401).json({ message : "Somthing happned"})
 
    }
@@ -63,6 +64,7 @@ router.post('/register', (request, response)=>{
     response.status(200).json({ message : "Registered Successfully" })
   })
   .catch(err =>{
+    console.log(err)
     response.status(401).json({ message : "You are not Allowed to Register"})
   })
 
@@ -80,22 +82,18 @@ router.patch('/reset', async (request, response)=>{
         }
         await user.verifyPassword(request.body.password, user.password, async (err, res) => {
           if(err){
-            response.status(401).json({ message : "Something happend"})
+            response.status(401).json({ message : "Please fill out the password field"})
           }
           else if(!res){
             response.status(400).json({ message : "Wrong password" })
           }
           else{
-                console.log(user, info, err)
-
             await user.verifyPassword(request.body.newPassword, user.password, async (err, res) => {
               user.password = request.body.newPassword;
               if(err){
-                response.status(401).json({ message : "Something happend"})
+                response.status(401).json({ message : "Please fill out the new password field"})
               }
               else if(res){
-                                console.log(user.password, request.body.password)
-
                 response.status(400).json({ message : "Entered new password is the same as old password" })
               }
               else{

@@ -3,6 +3,15 @@ const express = require('express')
 const router = express.Router();
 const getUserId = require("../auth/utils");
 
+router.get("/userposts", async (req, res) => {
+  try{
+  	let userId = getUserId(req)
+    const user = await User.findById(userId).populate('posts');
+    res.status(200).json({posts :user.posts});
+   }catch(err){
+     res.status(401).json({ message : "User not found"})
+   }
+})
 router.get("/favorites", async (req, res) => {
   try{
   	let userId = getUserId(req)

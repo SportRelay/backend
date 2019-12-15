@@ -15,6 +15,7 @@ const app = express();
 //Routes Requires
 const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/user");
+const postRoutes = require("./routes/post");
 
 //Middlewares
 app.use(express.json());
@@ -35,11 +36,12 @@ mongoose.connect(
 
 // JWT
 app.use('/api/user', passport.authenticate('jwt', {session: false}), require('./routes/user'));
-
+// app.use('/api/post', passport.authenticate('jwt', {session: false}), require('./routes/post'));
 
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
+app.use("/api/post", postRoutes);
 
 // Unresgister routes -- 404 page not found
 app.get("/api/*", (req, res) => {
