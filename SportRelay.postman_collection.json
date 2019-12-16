@@ -55,12 +55,13 @@
 							"raw": "{\n    \"username\": \"2\",\n    \"email\": \"A@A\",\n    \"password\": \"password\"\n}"
 						},
 						"url": {
-							"raw": "localhost:5000/auth/login",
+							"raw": "localhost:5000/api/auth/login",
 							"host": [
 								"localhost"
 							],
 							"port": "5000",
 							"path": [
+								"api",
 								"auth",
 								"login"
 							]
@@ -97,7 +98,12 @@
 						}
 					},
 					"response": []
-				},
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
 				{
 					"name": "alluser",
 					"request": {
@@ -117,6 +123,194 @@
 								"api",
 								"auth",
 								"allusers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "all posts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Favorites",
+			"item": [
+				{
+					"name": "add to favorite",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"favorite\": 1111\n}"
+						},
+						"url": {
+							"raw": "localhost:5000/api/user/favorites",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"user",
+								"favorites"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get favorites",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"favorite\": 1111\n}"
+						},
+						"url": {
+							"raw": "localhost:5000/api/user/favorites",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"user",
+								"favorites"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Posts",
+			"item": [
+				{
+					"name": "Comments",
+					"item": [
+						{
+							"name": "commet",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{authToken}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"comment\": \"comment 1\"\n}"
+								},
+								"url": {
+									"raw": "localhost:5000/api/post/comment/5df6a7f756ab224d04e09066",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"post",
+										"comment",
+										"5df6a7f756ab224d04e09066"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "get posts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:5000/api/post",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"post"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create post",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:5000/api/post",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"post"
 							]
 						}
 					},
@@ -149,7 +343,7 @@
 	],
 	"variable": [
 		{
-			"id": "13f65002-ef99-436c-bca8-32395c012092",
+			"id": "aaf9e1cc-c9fc-4ecb-86ea-3bb96a87bdbc",
 			"key": "authToken",
 			"value": "",
 			"type": "string"
