@@ -6,7 +6,6 @@ const getUserId = require("../auth/utils");
 const passport = require('passport');
 const passportHelper = require('../helper/passport')
 
-
 router.get("/", async (req, res) => {
   try{
     let posts = await Post.find().populate("user_id");
@@ -70,6 +69,20 @@ router.put("/comment/:postId", (req, res)  =>{
 	}
   })(req, res)
 })
+
+router.get("/:postId", async (req, res)  =>{
+	try{
+		const post = await Post.findById(req.params.postId);
+		if(!post){
+			res.status(404).json({message: "post not found"});
+		}
+		res.status(200).json({post});
+	}catch(err){
+		res.status(401).json({ message : err})
+
+	}
+})
+
 router.delete("/:postId", (req, res) => {
 	passport.authenticate('jwt', {session: false}, async (err, user, info)=>{
 	  if(err){ return res.status(400).json({ message: err }) }

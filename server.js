@@ -36,7 +36,6 @@ mongoose.connect(
 
 // JWT
 app.use('/api/user', passport.authenticate('jwt', {session: false}), require('./routes/user'));
-// app.use('/api/post', passport.authenticate('jwt', {session: false}), require('./routes/post'));
 
 // Routes
 app.use("/api/auth", authRoutes);
