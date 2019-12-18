@@ -108,4 +108,5 @@ router.delete("/:postId", (req, res) => {
 	}
   })(req, res)
 })
+
 module.exports = router
